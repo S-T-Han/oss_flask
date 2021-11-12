@@ -1,22 +1,19 @@
-import flask
-app = flask.Flask(__name__)
+# region
+from flask import Flask, render_template
+from flask_bootstrap import Bootstrap
+from flask_wtf import FlaskForm, form
+from wtforms import StringField, PasswordField, BooleanField, SubmitField, TextAreaField
+from wtforms.validators import DataRequired, Length, email
+
+import os
+# endregion
+
+app = Flask(__name__)
+
+bootstrap = Bootstrap(app)
+
+app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'secret string')
 
 @app.route('/')
-def hello():
-    return '<h1>Hello Totoro!</h1><img src="http://helloflask.com/totoro.gif">'
-
-@app.route('/user/<name>')
-def user_page(name):
-    return 'User: %s' % flask.escape(name)
-
-@app.route('/test')
-def test_url_for():
-    # 下面是一些调用示例（请在命令行窗口查看输出的 URL）：
-    print(flask.url_for('hello'))  # 输出：/
-    # 注意下面两个调用是如何生成包含 URL 变量的 URL 的
-    print(flask.url_for('user_page', name='greyli'))  # 输出：/user/greyli
-    print(flask.url_for('user_page', name='peter'))  # 输出：/user/peter
-    print(flask.url_for('test_url_for'))  # 输出：/test
-    # 下面这个调用传入了多余的关键字参数，它们会被作为查询字符串附加到 URL 后面。
-    print(flask.url_for('test_url_for', num=2))  # 输出：/test?num=2
-    return 'Test page'
+def index():
+    return render_template('index.html')
